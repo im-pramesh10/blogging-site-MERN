@@ -13,8 +13,33 @@ exports.create = async (req, res) => { // const {firstname, lastname, username, 
             ...req.body
         })
         console.log(user)
-        res.json({message:"user succesfully created"})
-    } catch (e) {
-        res.json({message: e.message})
+        res.json({message: "user succesfully created"})
+    } catch (err) {
+        res.json({message: err.message})
+    }
+}
+exports.update = async (req, res) => { // console.log(req.params.id)
+    try {
+        const _id = req.params.id
+        let user = await User.findById(_id)
+        for (const key in req.body) {
+            user[key] = req.body[key]
+        }
+        user.save()
+        res.json({message: `User ${
+                user.username
+            } Updated`})
+    } catch (err) {
+        res.json({err})
+    }
+}
+exports.delete = async (req, res) => {
+    try{
+        const _id = req.params.id
+        const user = await User.findByIdAndDelete(_id)
+        res.json(`${user.username} deleted`)
+
+    }catch (err){
+        res.json(err)
     }
 }
