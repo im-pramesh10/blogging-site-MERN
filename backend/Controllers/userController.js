@@ -2,10 +2,19 @@
 const {User} = require('../models/userModel')
 
 exports.getAll = async (req, res) => {
-    console.log(req.method)
     const user = await User.find({}, "-password").exec()
     console.log(user)
     res.json(user)
+}
+exports.getOne = async (req, res) => {
+    try {
+        const user = await User.findOne({_id: req.params.id}).exec()
+        res.json(user)
+    } catch (err){
+        res.json(err.message)
+    }
+
+
 }
 exports.create = async (req, res) => { // const {firstname, lastname, username, email, password} = req.body
     try {
@@ -26,20 +35,24 @@ exports.update = async (req, res) => { // console.log(req.params.id)
             user[key] = req.body[key]
         }
         user.save()
-        res.json({message: `User ${
+        res.json({
+                message: `User ${
                 user.username
-            } Updated`})
+            } Updated`
+        })
     } catch (err) {
         res.json({err})
     }
 }
 exports.delete = async (req, res) => {
-    try{
+    try {
         const _id = req.params.id
         const user = await User.findByIdAndDelete(_id)
-        res.json(`${user.username} deleted`)
+        res.json(`${
+            user.username
+        } deleted`)
 
-    }catch (err){
+    } catch (err) {
         res.json(err)
     }
 }

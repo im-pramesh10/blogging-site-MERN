@@ -4,7 +4,7 @@ connectDB().catch(err => console.log(err.message))
 
 async function connectDB() {
     await mongoose.connect(process.env.DB_URI, {dbName: process.env.DB_NAME})
-    console.log('Connected to DB')
+    // console.log('Connected to DB')
 }
 
 mongoose.connection.on('connected', () => {

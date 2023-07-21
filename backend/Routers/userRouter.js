@@ -4,8 +4,9 @@ router = express.Router()
 
 router
     .post('/',userController.create)
-    .patch('/:id',userController.update)
     .get('/', userController.getAll)
+    .get('/:id',userController.getOne)
+    .patch('/:id',userController.update)
     .delete('/:id',userController.delete)
     
 
