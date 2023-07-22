@@ -10,7 +10,7 @@ exports.getOne = async (req, res) => {
     try {
         const user = await User.findOne({_id: req.params.id}).exec()
         res.json(user)
-    } catch (err){
+    } catch (err) {
         res.json(err.message)
     }
 
@@ -34,12 +34,14 @@ exports.update = async (req, res) => { // console.log(req.params.id)
         for (const key in req.body) {
             user[key] = req.body[key]
         }
-        user.save()
-        res.json({
-                message: `User ${
-                user.username
-            } Updated`
+        user.save().then(() => {
+            res.json({
+                    message: `User ${
+                    user.username
+                } Updated`
+            })
         })
+
     } catch (err) {
         res.json({err})
     }

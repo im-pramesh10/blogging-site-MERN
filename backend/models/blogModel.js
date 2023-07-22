@@ -23,5 +23,11 @@ const blogSchema = new mongoose.Schema({
         type: Date
     }
 })
+blogSchema.pre('save', function(next) {
+    if (!this.isNew) {
+        this.updatedAt = Date.now()
+    }
+    next();
+})
 
 exports.Blog = mongoose.model('Blog', blogSchema)

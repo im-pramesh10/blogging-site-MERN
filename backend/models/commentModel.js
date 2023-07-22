@@ -24,5 +24,10 @@ const commentSchema = new mongoose.Schema({
         type: Date
     }
 })
-
+commentSchema.pre('save', function (next) {
+    if (!this.isNew) {
+        this.updatedAt = Date.now()
+    }
+    next();
+})
 exports.Comment = mongoose.model('Comment', commentSchema)

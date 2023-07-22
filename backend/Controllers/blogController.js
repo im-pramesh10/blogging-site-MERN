@@ -1,4 +1,5 @@
 const {Blog} = require("../models/blogModel")
+const {Comment} = require("../models/commentModel")
 
 exports.create = async (req, res) => {
     try {
@@ -27,12 +28,14 @@ exports.update = async (req, res) => { // console.log(req.params.id)
         let blog = await Blog.findById(_id)
         blog.title = req.body.title
         blog.content = req.body.content
-        blog.save()
-        res.json({
-                message: `Blog ${
-                blog._id
-            } Updated`
+        blog.save().then(() => {
+            res.json({
+                    message: `Blog ${
+                    blog._id
+                } Updated`
+            })
         })
+
     } catch (err) {
         res.json({err})
     }
@@ -60,16 +63,26 @@ exports.getPages = async (req, res) => {
         const totalBlogs = await Blog.countDocuments();
         const totalPages = Math.ceil(totalBlogs / limit);
 
-        const blogs = await Blog.find().populate('author',"-password").skip((page - 1) * limit).limit(limit);
+        const blogs = await Blog.find().populate('author', "-password").skip((page - 1) * limit).limit(limit);
 
         res.json({
             totalItems: totalBlogs,
             totalPages: totalPages,
             currentPage: page,
             itemsPerPage: limit,
-            blogs
+            blogs: blogs
         });
     } catch (error) {
         res.status(500).json({message: 'Error fetching blogs', error});
+    }
+}
+
+exports.getComments = async (req, res) => {
+    try {
+        const count = await Comment.count({blog: req.params.id}).exec()
+        const comments = await Comment.find({blog: req.params.id}).exec()
+        res.json({count: count, comments: comments})
+    } catch (err) {
+        res.json(err)
     }
 }

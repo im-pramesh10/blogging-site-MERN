@@ -8,6 +8,7 @@ router
     .get('/:id',blogController.getOne)
     .patch('/:id',blogController.update)
     .delete('/:id',blogController.delete)
+    .get('/:id/comments',blogController.getComments)
     
 
 exports.router = router
