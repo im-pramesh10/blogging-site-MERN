@@ -60,7 +60,7 @@ exports.getPages = async (req, res) => {
         const totalBlogs = await Blog.countDocuments();
         const totalPages = Math.ceil(totalBlogs / limit);
 
-        const blogs = await Blog.find().populate('author').skip((page - 1) * limit).limit(limit);
+        const blogs = await Blog.find().populate('author',"-password").skip((page - 1) * limit).limit(limit);
 
         res.json({
             totalItems: totalBlogs,
