@@ -18,10 +18,9 @@ exports.getOne = async (req, res) => {
 }
 exports.create = async (req, res) => { // const {firstname, lastname, username, email, password} = req.body
     try {
-        const user = await User.create({
+        await User.create({
             ...req.body
         })
-        console.log(user)
         res.json({message: "user succesfully created"})
     } catch (err) {
         res.json({message: err.message})

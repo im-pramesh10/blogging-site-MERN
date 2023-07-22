@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 const userRouter = require('./Routers/userRouter')
 const blogRouter = require('./Routers/blogRouter')
 const commentRouter = require('./Routers/commentRouter')
+const likeRouter = require('./Routers/likeRouter')
 
 const server = express()
 server.use(express.json())
@@ -15,6 +16,7 @@ server.use(express.json())
 server.use('/api/users', userRouter.router)
 server.use('/api/blogs', blogRouter.router)
 server.use('/api/comments', commentRouter.router)
+server.use('/api/likes',likeRouter.router)
 
 
 mongoose.connection.once('open', () => {

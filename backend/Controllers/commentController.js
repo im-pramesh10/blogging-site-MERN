@@ -2,10 +2,9 @@ const {Comment} = require("../models/commentModel")
 
 exports.create = async (req, res) => {
     try {
-        const comment = await Comment.create({
+        await Comment.create({
             ...req.body
         })
-        console.log(comment)
         res.json({message: "comment succesfully created"})
     } catch (err) {
         res.json(err)
