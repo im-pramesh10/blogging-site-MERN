@@ -1,5 +1,11 @@
 const {Blog} = require("../models/blogModel")
 const {Comment} = require("../models/commentModel")
+const {Like} = require("../models/likesModel")
+
+async function getBloglikes(id) {
+    const likesCount = await Like.count().where("blog").equals(id)
+    return likesCount
+}
 
 exports.create = async (req, res) => {
     try {
@@ -14,7 +20,12 @@ exports.create = async (req, res) => {
 }
 exports.getOne = async (req, res) => {
     try {
-        const blog = await Blog.findOne({_id: req.params.id}).populate("author", "-password").exec()
+        let blog = await Blog.findOne({_id: req.params.id}).populate("author", "-password").exec()
+        const likesCount = await getBloglikes(req.params.id)
+        blog = {
+            ... blog._doc,
+            likesCount: likesCount
+        }
         res.json(blog)
     } catch (err) {
         res.json(err)
@@ -63,7 +74,39 @@ exports.getPages = async (req, res) => {
         const totalBlogs = await Blog.countDocuments();
         const totalPages = Math.ceil(totalBlogs / limit);
 
-        const blogs = await Blog.find().populate('author', "-password").skip((page - 1) * limit).limit(limit);
+        // const blogs = await Blog.find().populate('author', "-password").skip((page - 1) * limit).limit(limit);
+        const aggregatedResult = await Blog.aggregate([
+            {
+                $skip: (page - 1) * limit
+            },
+            {
+                $limit: limit
+            },
+            {
+                $lookup: {
+                    from: "likes",
+                    localField: "_id",
+                    foreignField: "blog",
+                    as: "likes"
+                }
+            },
+            {
+                $addFields: {
+                    likesCount: {
+                        $size: "$likes"
+                    }
+                }
+            }, {
+                $project: {
+                    likes: 0
+                }
+            }
+        ]).exec()
+
+        const blogs = await Blog.populate(aggregatedResult, {
+            path: "author",
+            select: "-password"
+        })
 
         res.json({
             totalItems: totalBlogs,
