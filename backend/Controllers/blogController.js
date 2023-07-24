@@ -39,7 +39,7 @@ exports.update = async (req, res) => { // console.log(req.params.id)
     const _id = req.params.id
     let blog = await Blog.findById(_id)
     //check if current logged in user is the owner of the blog
-    if (req.userid === blog.author) return res.sendStatus(403)
+    if (req.userid !== blog.author.toString()) return res.sendStatus(403)
     try {
         blog.title = req.body.title
         blog.content = req.body.content
@@ -59,7 +59,7 @@ exports.delete = async (req, res) => {
     const _id = req.params.id
     let blog = await Blog.findById(_id)
     //check if current logged in user is the owner of the blog
-    if (req.userid === blog.author) return res.sendStatus(403)
+    if (req.userid !== blog.author.toString()) return res.sendStatus(403)
     try {
         const _id = req.params.id
         const blog = await Blog.findByIdAndDelete(_id)

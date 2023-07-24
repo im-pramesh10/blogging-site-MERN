@@ -16,7 +16,7 @@ exports.login = async(req,res) => {
             _id : foundUser._id,
             username : foundUser.username
         }, process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "30s" } //change this later
+        { expiresIn: "3h" } //change this later
         );
         const refreshToken = jwt.sign({
             _id : foundUser._id,
