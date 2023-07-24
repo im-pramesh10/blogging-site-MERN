@@ -13,8 +13,6 @@ exports.getOne = async (req, res) => {
     } catch (err) {
         res.json(err.message)
     }
-
-
 }
 exports.create = async (req, res) => { // const {firstname, lastname, username, email, password} = req.body
     try {

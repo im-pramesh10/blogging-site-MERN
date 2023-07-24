@@ -2,21 +2,15 @@ require('dotenv').config()
 require('./helpers/init_mongoDb')
 const express = require('express')
 const mongoose = require('mongoose')
-
-
-const userRouter = require('./Routers/userRouter')
-const blogRouter = require('./Routers/blogRouter')
-const commentRouter = require('./Routers/commentRouter')
-const likeRouter = require('./Routers/likeRouter')
-
 const server = express()
 server.use(express.json())
 
 // Routers
-server.use('/api/users', userRouter.router)
-server.use('/api/blogs', blogRouter.router)
-server.use('/api/comments', commentRouter.router)
-server.use('/api/likes',likeRouter.router)
+server.use('/auth', require('./Routers/authRouter'))
+server.use('/api/users', require('./Routers/userRouter'))
+server.use('/api/blogs', require('./Routers/blogRouter'))
+server.use('/api/comments', require('./Routers/commentRouter'))
+server.use('/api/likes',require('./Routers/likeRouter'))
 
 
 mongoose.connection.once('open', () => {

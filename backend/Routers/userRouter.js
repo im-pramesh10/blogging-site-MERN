@@ -1,6 +1,6 @@
 const express = require('express')
 const userController = require('../Controllers/userController')
-router = express.Router()
+const router = express.Router()
 
 router
     .post('/',userController.create)
@@ -10,4 +10,4 @@ router
     .delete('/:id',userController.delete)
     
 
-exports.router = router
+module.exports = router
