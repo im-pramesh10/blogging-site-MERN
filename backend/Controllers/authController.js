@@ -8,7 +8,7 @@ exports.login = async(req,res) => {
     const foundUser = await User.findOne({username: usernameOrEmail}) || await User.findOne({email: usernameOrEmail})
     if (!foundUser) return res.sendStatus(401)
 
-    const passMatches = bcrypt.compare(pwd,foundUser.password)
+    const passMatches = await bcrypt.compare(pwd,foundUser.password)
 
     if(passMatches){
         //create access token and refresh token
@@ -16,7 +16,7 @@ exports.login = async(req,res) => {
             _id : foundUser._id,
             username : foundUser.username
         }, process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "3h" } //change this later
+        { expiresIn: "15m" } //change this later
         );
         const refreshToken = jwt.sign({
             _id : foundUser._id,
