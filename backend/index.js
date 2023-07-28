@@ -12,6 +12,7 @@ server.use(cookieParser())
 // Routers
 server.use('/auth', require('./Routers/authRouter'))
 server.use('/refresh', require('./Routers/refreshTokenRouter'))
+server.use('/logout', require('./Routers/logoutRouter'))
 server.use('/api/users', require('./Routers/userRouter'))
 server.use('/api/blogs', require('./Routers/blogRouter'))
 server.use('/api/comments', require('./Routers/commentRouter'))
