@@ -4,8 +4,10 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
 const server = express()
-// const cors = require('cors')
-// server.use(cors())
+const cors = require('cors')
+
+//middlewares
+server.use(cors())
 server.use(express.json())
 server.use(cookieParser())
 
@@ -16,7 +18,7 @@ server.use('/logout', require('./Routers/logoutRouter'))
 server.use('/api/users', require('./Routers/userRouter'))
 server.use('/api/blogs', require('./Routers/blogRouter'))
 server.use('/api/comments', require('./Routers/commentRouter'))
-server.use('/api/likes',require('./Routers/likeRouter'))
+server.use('/api/likes', require('./Routers/likeRouter'))
 
 
 mongoose.connection.once('open', () => {
