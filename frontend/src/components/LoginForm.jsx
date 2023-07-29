@@ -5,8 +5,6 @@ import axios from "axios";
 const LoginForm = () => {
     const onSubmit = async (values, actions) => {
         console.log(actions)
-        // do your api request to login here and clear the form
-        // also display the error message if some thing goes wrong
         try {
             const result = await axios({
                 method: 'post',
@@ -18,16 +16,17 @@ const LoginForm = () => {
             });
             const data = result.data;
             console.log(data);
+            actions.resetForm();
         } catch (error) {
-            alert(error.response.data.message || error.response.data || error.message)
+            alert(error?.response?.data?.message || error?.response?.data || error.message)
         }
-        actions.resetForm();
     }
 
     const {
         handleChange,
         touched,
         handleSubmit,
+        isSubmitting,
         handleBlur,
         values,
         errors
@@ -73,7 +72,7 @@ const LoginForm = () => {
                     onChange={handleChange}
                     type="password"
                     className="p-3 mt-[0.07in] text-2xl text-[#ffffff] w-[16rem] h-[3.3rem] bg-[#333333] rounded-lg"/>
-                <button type="submit" className="w-[0.94in] h-[0.41in] rounded-md mt-[0.4in] text-2xl text-[#ffffff] font-bold bg-gruvboxBlue">Login</button>
+                <button disabled={isSubmitting} type="submit" className="w-[0.94in] h-[0.41in] rounded-md mt-[0.4in] text-2xl text-[#ffffff] font-bold bg-gruvboxBlue">Login</button>
             </form>
             <p className="text-[#ffffff] mt-[0.5in] text-xl">Don't Have an Account?
                 <a className="text-[#3465a4]" href="/">
